@@ -9,6 +9,13 @@ const Title = ({ text }) => {
 };
 const Statistics = ({ good, neutral, bad }) => {
   const total = good + neutral + bad;
+  if (total <= 0) {
+    return (
+      <div>
+        <p>No feedback given</p>
+      </div>
+    );
+  }
   const average = (good - bad) / (good + neutral + bad) || 0; // Avoids NaN as default value
   const positive = (good / total) * 100 || 0;
   return (
