@@ -1,7 +1,11 @@
 import React from "react";
 
-const PhonebookEntry = ({ name }) => {
-  return <p>{name}</p>;
+const PhonebookEntry = ({ name, number }) => {
+  return (
+    <p>
+      {name} {number}
+    </p>
+  );
 };
 
 export default PhonebookEntry;
