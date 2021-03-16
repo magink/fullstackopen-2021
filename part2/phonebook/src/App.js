@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import PhonebookEntry from "./components/PhonebookEntry";
+import PhonebookList from "./components/PhonebookList";
+import PersonForm from "./components/PersonForm";
+import Search from "./components/Search";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -36,51 +38,15 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <input
-        onChange={handleSearch}
-        type="search"
-        placeholder="Search.."
-        value={search}
+      <Search search={search} handleSearch={handleSearch} />
+      <PersonForm
+        addToPhonebook={addToPhonebook}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+        newName={newName}
+        newNumber={newNumber}
       />
-      <h2>Add new</h2>
-      <form onSubmit={addToPhonebook}>
-        <div>
-          name:{" "}
-          <input
-            onChange={handleNameChange}
-            value={newName}
-            required
-            // pattern="" // Too demanding for now. Too many variations.
-            placeholder="Hannu Mikkola" // RIP
-          />
-        </div>
-        <div>
-          number:{" "}
-          <input
-            type="tel"
-            onChange={handleNumberChange}
-            value={newNumber}
-            required
-            pattern="^[0-9 -]{0,16}$" // Max 16 numbers for now, no +
-            placeholder="358401234567"
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {persons
-        .filter((person) =>
-          person.name.toLowerCase().includes(search.toLowerCase())
-        )
-        .map((filteredPerson) => (
-          <PhonebookEntry
-            key={filteredPerson.name}
-            name={filteredPerson.name}
-            number={filteredPerson.number}
-          />
-        ))}
+      <PhonebookList persons={persons} search={search} />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 
-const PhonebookEntry = ({ name, number }) => {
+const Person = ({ name, number }) => {
   return (
     <p>
       {name} {number}
@@ -8,4 +8,4 @@ const PhonebookEntry = ({ name, number }) => {
   );
 };
 
-export default PhonebookEntry;
+export default Person;
