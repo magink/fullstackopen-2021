@@ -2,12 +2,15 @@ import React from "react";
 
 const Search = ({ handleSearch, search }) => {
   return (
-    <input
-      onChange={handleSearch}
-      type="search"
-      placeholder="Search.."
-      value={search}
-    />
+    <>
+      <span>filter shown with </span>
+      <input
+        onChange={handleSearch}
+        type="search"
+        placeholder="Search.."
+        value={search}
+      />
+    </>
   );
 };
 
