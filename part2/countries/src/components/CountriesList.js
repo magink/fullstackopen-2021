@@ -1,6 +1,6 @@
 import React from "react";
 
-const CountriesList = ({ countries }) => {
+const CountriesList = ({ countries, handleClick }) => {
   return (
     <>
       <ul>
@@ -8,7 +8,10 @@ const CountriesList = ({ countries }) => {
           <li>Too many matches, specify another filter</li>
         ) : (
           countries.map((country) => (
-            <li key={country.numericCode}>{country.name}</li>
+            <li key={country.numericCode}>
+              {country.name}
+              <button onClick={() => handleClick(country)}>Show</button>
+            </li>
           ))
         )}
       </ul>

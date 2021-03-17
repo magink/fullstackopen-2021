@@ -7,6 +7,8 @@ import SearchResult from "./components/SearchResult";
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [search, setSearch] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
+  console.log("selected", selectedCountry);
 
   useEffect(() => {
     axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
@@ -16,12 +18,22 @@ const App = () => {
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
+    setSelectedCountry("");
+  };
+
+  const handleCountry = (country) => {
+    setSelectedCountry(country);
   };
 
   return (
     <>
       <SearchField handleSearch={handleSearch} search={search} />
-      <SearchResult countries={countries} search={search} />
+      <SearchResult
+        handleCountry={handleCountry}
+        countries={countries}
+        search={search}
+        selectedCountry={selectedCountry}
+      />
     </>
   );
 };
