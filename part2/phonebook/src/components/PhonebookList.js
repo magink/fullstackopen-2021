@@ -1,7 +1,7 @@
 import React from "react";
 import Person from "./Person";
 
-const PhonebookList = ({ persons, search }) => {
+const PhonebookList = ({ persons, search, handleDelete }) => {
   return (
     <>
       <h2>Numbers</h2>
@@ -10,11 +10,10 @@ const PhonebookList = ({ persons, search }) => {
           person.name.toLowerCase().includes(search.toLowerCase())
         )
         .map((filteredPerson) => (
-          <Person
-            key={filteredPerson.name}
-            name={filteredPerson.name}
-            number={filteredPerson.number}
-          />
+          <div key={filteredPerson.name}>
+            <Person name={filteredPerson.name} number={filteredPerson.number} />
+            <button onClick={() => handleDelete(filteredPerson)}>delete</button>
+          </div>
         ))}
     </>
   );

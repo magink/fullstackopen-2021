@@ -12,7 +12,7 @@ const App = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    personsServices.getAll().then((personsData) => {
+    personsServices.getAllPersons().then((personsData) => {
       setPersons(personsData);
     });
   }, []);
@@ -24,7 +24,7 @@ const App = () => {
       number: newNumber,
     };
     personsServices
-      .create(newPersonObject)
+      .createPerson(newPersonObject)
       .then((response) => setPersons(persons.concat(response)));
   };
   const handleNameChange = (event) => {
@@ -35,6 +35,15 @@ const App = () => {
   };
   const handleSearch = (event) => {
     setSearch(event.target.value);
+  };
+  const handleDelete = (person) => {
+    if (window.confirm(`Do you really want to delete ${person.name}?`)) {
+      personsServices.deletePerson(person.id).then((response) => {
+        if (response.status === 200) {
+          setPersons(persons.filter((p) => p.id !== person.id));
+        }
+      });
+    }
   };
   return (
     <div>
@@ -47,7 +56,11 @@ const App = () => {
         newName={newName}
         newNumber={newNumber}
       />
-      <PhonebookList persons={persons} search={search} />
+      <PhonebookList
+        persons={persons}
+        search={search}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };
