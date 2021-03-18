@@ -23,15 +23,36 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-    personsServices
-      .createPerson(newPersonObject)
-      .then((response) => setPersons(persons.concat(response)));
+    const exist = persons.find(
+      (p) => p.name.toLowerCase() === newPersonObject.name.toLowerCase()
+    );
+    if (exist) {
+      if (
+        window.confirm(
+          "Person is already added, replace old number with new number?"
+        )
+      ) {
+        personsServices
+          .updatePerson(exist.id, newPersonObject)
+          .then((response) =>
+            setPersons(
+              persons.map((person) =>
+                person.id !== response.id ? person : response
+              )
+            )
+          );
+      }
+    } else {
+      personsServices
+        .createPerson(newPersonObject)
+        .then((response) => setPersons(persons.concat(response)));
+    }
   };
   const handleNameChange = (event) => {
-    setNewName(event.target.value);
+    setNewName(event.target.value.trim());
   };
   const handleNumberChange = (event) => {
-    setNewNumber(event.target.value);
+    setNewNumber(event.target.value.trim());
   };
   const handleSearch = (event) => {
     setSearch(event.target.value);
