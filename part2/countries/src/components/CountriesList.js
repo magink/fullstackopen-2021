@@ -10,7 +10,7 @@ const CountriesList = ({ countries, handleClick }) => {
           countries.map((country) => (
             <li key={country.numericCode}>
               {country.name}
-              <button onClick={() => handleClick(country)}>Show</button>
+              <button onClick={() => handleClick(country.name)}>Show</button>
             </li>
           ))
         )}

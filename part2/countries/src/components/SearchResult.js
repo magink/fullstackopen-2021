@@ -1,24 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import CountriesList from "./CountriesList";
 import CountryDetailed from "./CountryDetailed";
 
-const SearchResult = ({
-  countries,
-  search,
-  handleCountry,
-  selectedCountry,
-}) => {
-  const filteredCountriesList = countries.filter((country) =>
-    country.name.toLowerCase().includes(search.toLowerCase())
-  );
-  if (selectedCountry) {
-    return (
-      <div>
-        <CountryDetailed country={selectedCountry} />
-      </div>
-    );
-  } else if (filteredCountriesList.length === 1) {
+const SearchResult = ({ search, handleSearch }) => {
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
+      setCountries(response.data);
+    });
+  }, []);
+
+  const filteredCountriesList = countries.filter((country) => {
+    return country.name.toLowerCase().includes(search.toLowerCase());
+  });
+
+  if (filteredCountriesList.length === 1) {
     return (
       <div>
         <CountryDetailed country={filteredCountriesList[0]} />
@@ -29,7 +28,7 @@ const SearchResult = ({
       <div>
         <CountriesList
           countries={filteredCountriesList}
-          handleClick={handleCountry}
+          handleClick={handleSearch}
         />
       </div>
     );

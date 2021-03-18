@@ -1,39 +1,22 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
 import SearchField from "./components/SearchField";
 import SearchResult from "./components/SearchResult";
 
 const App = () => {
-  const [countries, setCountries] = useState([]);
   const [search, setSearch] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
-  console.log("selected", selectedCountry);
 
-  useEffect(() => {
-    axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
-      setCountries(response.data);
-    });
-  }, []);
-
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
-    setSelectedCountry("");
-  };
-
-  const handleCountry = (country) => {
-    setSelectedCountry(country);
+  const handleSearch = (searchValue) => {
+    console.log(searchValue);
+    searchValue.target
+      ? setSearch(searchValue.target.value) // If value comes from search field
+      : setSearch(searchValue); // If value comes from pressed button in list
   };
 
   return (
     <>
       <SearchField handleSearch={handleSearch} search={search} />
-      <SearchResult
-        handleCountry={handleCountry}
-        countries={countries}
-        search={search}
-        selectedCountry={selectedCountry}
-      />
+      <SearchResult search={search} handleSearch={handleSearch} />
     </>
   );
 };
