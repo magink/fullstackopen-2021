@@ -14,7 +14,7 @@ const updatePerson = (id, newObject) => {
     .then((response) => response.data);
 };
 const deletePerson = (id) => {
-  return axios.delete(`${baseUrl}/${id}`); //.then((response) => response.data);
+  return axios.delete(`${baseUrl}/${id}`).then((response) => response.data);
 };
 // esLint complains if I use shorter notation, so I had to use the longer
 // See https://github.com/benmosher/eslint-plugin-import/blob/v2.22.1/docs/rules/no-anonymous-default-export.md
