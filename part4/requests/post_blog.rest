@@ -19,3 +19,15 @@ Content-Type: application/json
   "url": "www.sweclockers.com",
   "likes": 12
 }
+
+### 
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Fragzone",
+  "author": "magink",
+  "url": "www.fz.com",
+  "likes": 76
+}
