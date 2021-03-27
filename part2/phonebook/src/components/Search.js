@@ -1,11 +1,11 @@
 import React from "react";
 
-const Search = ({ handleSearch, search }) => {
+const Search = ({ onSearch, search }) => {
   return (
     <>
       <span>filter shown with </span>
       <input
-        onChange={handleSearch}
+        onChange={onSearch}
         type="search"
         placeholder="Search.."
         value={search}

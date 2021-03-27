@@ -1,7 +1,7 @@
 import React from "react";
 import Person from "./Person";
 
-const PhonebookList = ({ persons, search, handleDelete }) => {
+const PhonebookList = ({ persons, search, onDelete }) => {
   return (
     <>
       <h2>Numbers</h2>
@@ -12,7 +12,7 @@ const PhonebookList = ({ persons, search, handleDelete }) => {
         .map((filteredPerson) => (
           <div key={filteredPerson.name}>
             <Person name={filteredPerson.name} number={filteredPerson.number} />
-            <button onClick={() => handleDelete(filteredPerson)}>delete</button>
+            <button onClick={() => onDelete(filteredPerson)}>delete</button>
           </div>
         ))}
     </>

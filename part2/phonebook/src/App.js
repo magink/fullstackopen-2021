@@ -50,7 +50,8 @@ const App = () => {
         })
         .catch((error) => {
           setWarning(true);
-          showNotification(`Unable to add person, reason being ${error}`);
+          console.log(error.response);
+          showNotification(`${error.response.data.error}`);
         });
     }
   };
@@ -73,7 +74,7 @@ const App = () => {
         })
         .catch((error) => {
           setWarning(true);
-          showNotification(`Unable to update person, reason being ${error}`);
+          showNotification(`${error.response.data.error}`);
         });
     }
   };
@@ -100,8 +101,9 @@ const App = () => {
       personsServices
         .deletePerson(person.id)
         .then((response) => {
-          if (response.status === 200) {
+          if (response.status === 204) {
             setPersons(persons.filter((p) => p.id !== person.id));
+          } else {
           }
         })
         .catch((error) => {
@@ -118,18 +120,18 @@ const App = () => {
         <Notification message={notification} warning={warning} />
       )}
 
-      <Search search={search} handleSearch={handleSearch} />
+      <Search search={search} onSearch={handleSearch} />
       <PersonForm
         addToPhonebook={addToPhonebook}
-        handleNameChange={handleNameChange}
-        handleNumberChange={handleNumberChange}
+        onNameChange={handleNameChange}
+        onNumberChange={handleNumberChange}
         newName={newName}
         newNumber={newNumber}
       />
       <PhonebookList
         persons={persons}
         search={search}
-        handleDelete={handleDelete}
+        onDelete={handleDelete}
       />
     </div>
   );

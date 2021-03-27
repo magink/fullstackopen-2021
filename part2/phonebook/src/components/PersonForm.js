@@ -2,8 +2,8 @@ import React from "react";
 
 const PersonForm = ({
   addToPhonebook,
-  handleNameChange,
-  handleNumberChange,
+  onNameChange,
+  onNumberChange,
   newName,
   newNumber,
 }) => {
@@ -14,7 +14,7 @@ const PersonForm = ({
         <div>
           name:{" "}
           <input
-            onChange={handleNameChange}
+            onChange={onNameChange}
             value={newName}
             required
             // pattern="" // Too demanding for now. Too many variations.
@@ -25,10 +25,10 @@ const PersonForm = ({
           number:{" "}
           <input
             type="tel"
-            onChange={handleNumberChange}
+            onChange={onNumberChange}
             value={newNumber}
             required
-            pattern="^[0-9 -]{0,16}$" // Max 16 numbers for now, no +
+            // pattern="^[0-9 -]{0,16}$" // Max 16 numbers for now, no +
             placeholder="358401234567"
           />
         </div>
