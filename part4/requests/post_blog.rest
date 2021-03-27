@@ -1,0 +1,21 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Reddit",
+  "author": "magink",
+  "url": "www.reddit.com",
+  "likes": 16
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Sweclockers",
+  "author": "magink",
+  "url": "www.sweclockers.com",
+  "likes": 12
+}

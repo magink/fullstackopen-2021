@@ -1,0 +1,22 @@
+{
+  "name": "bloglist",
+  "version": "0.0.1",
+  "description": "Allows users to save information about interesting blogs they find on the web",
+  "main": "index.js",
+  "author": "magink",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "lint": "eslint ."
+    },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.23.0",
+    "nodemon": "^2.0.7"
+  }
+}
