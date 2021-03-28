@@ -1,7 +1,5 @@
 const listHelper = require('../list_helper');
 
-console.log(listHelper);
-
 test('dummy retuns 1', () => {
   const blogs = [];
   const result = listHelper.dummy(blogs);
@@ -67,16 +65,50 @@ const largeList = [
     __v: 0
   }
 ];
+
 const emptyList = [];
+describe('mostBlogs', () => {
+
+  // To be continued before part 4 is done
+  test('of empty list', () => {
+    const result = listHelper.mostBlogs(emptyList);
+    expect(result).toEqual(undefined);
+  });
+
+  test('of list with only one blog', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog);
+    console.log(result);
+    expect(result).toEqual(
+      expect.objectContaining({
+        author: listWithOneBlog[0].author,
+        blogs: 1
+      })
+    );
+  });
+
+  test('of list with many blogs and authors', () => {
+    const result = listHelper.mostBlogs(largeList);
+    expect(result).toEqual(
+      expect.objectContaining({
+        author: 'Robert C. Martin',
+        blogs: 3
+      })
+    );
+  });
+});
+
 describe('favoriteBlog', () => {
+
   test('of when list is zero', () => {
     const result = listHelper.favoriteBlog(emptyList);
     expect(result).toEqual(0);
   });
+
   test('of when list only has one blog', () => {
     const result = listHelper.favoriteBlog(listWithOneBlog);
     expect(result).toEqual(listWithOneBlog[0]);
   });
+
   test('of a large list is correct', () => {
     const result = listHelper.favoriteBlog(largeList);
     expect(result).toEqual(largeList[2]);
@@ -84,14 +116,17 @@ describe('favoriteBlog', () => {
 });
 
 describe('Total likes', () => {
+
   test('of when list is zero', () => {
     const result = listHelper.totalLikes(emptyList);
     expect(result).toBe(0);
   });
+
   test('of when list only has blog equals the likes of that', () => {
     const result = listHelper.totalLikes(listWithOneBlog);
     expect(result).toBe(5);
   });
+
   test('of when a bigger list is calculated right', () => {
     const result = listHelper.totalLikes(largeList);
     expect(result).toBe(36);
