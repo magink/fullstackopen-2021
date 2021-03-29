@@ -1,6 +1,6 @@
 const listHelper = require('../list_helper');
 
-test('dummy retuns 1', () => {
+test('dummy returns 1', () => {
   const blogs = [];
   const result = listHelper.dummy(blogs);
   expect(result).toBe(1);
@@ -67,9 +67,36 @@ const largeList = [
 ];
 
 const emptyList = [];
-describe('mostBlogs', () => {
 
-  // To be continued before part 4 is done
+describe('mostLikes', () => {
+
+  test('of empty list', () => {
+    const result = listHelper.mostLikes(emptyList);
+    expect(result).toEqual(undefined);
+  });
+
+  test('of list with only one blog', () => {
+    const result = listHelper.mostLikes(listWithOneBlog);
+    expect(result).toEqual(
+      expect.objectContaining({
+        author: listWithOneBlog[0].author,
+        likes: listWithOneBlog[0].likes
+      })
+    );
+  });
+
+  test('of list with many blogs and authors', () => {
+    const result = listHelper.mostLikes(largeList);
+    expect(result).toEqual(
+      expect.objectContaining({
+        author: 'Edsger W. Dijkstra',
+        likes: 17
+      })
+    );
+  });
+});
+
+describe('mostBlogs', () => {
   test('of empty list', () => {
     const result = listHelper.mostBlogs(emptyList);
     expect(result).toEqual(undefined);
@@ -77,7 +104,6 @@ describe('mostBlogs', () => {
 
   test('of list with only one blog', () => {
     const result = listHelper.mostBlogs(listWithOneBlog);
-    console.log(result);
     expect(result).toEqual(
       expect.objectContaining({
         author: listWithOneBlog[0].author,
