@@ -1,13 +1,3 @@
-/*
-Use the supertest package for writing a test that makes an HTTP GET request to the /api/blogs url.
-Verify that the blog list application returns the correct amount of blog posts in the JSON format.
-
-Once the test is finished, refactor the route handler to use the async/await syntax instead of promises.
-
-Notice that you will have to make similar changes to the code that were made in the material,
-like defining the test environment so that you can write tests that use their own separate database.
-*/
-
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../app');
@@ -19,12 +9,9 @@ const api = supertest(app);
 beforeEach(async () => {
   await Blog.deleteMany({});
 
-  let blogObject = new Blog(helper.InitialBlogs[0]);
-  await blogObject.save();
-  blogObject = new Blog(helper.InitialBlogs[1]);
-  await blogObject.save();
-  blogObject = new Blog(helper.InitialBlogs[2]);
-  await blogObject.save();
+  const blogs = helper.InitialBlogs.map(blog => new Blog(blog));
+  const promiseArray = blogs.map(blog => blog.save());
+  await Promise.all(promiseArray);
 
 });
 
@@ -36,8 +23,8 @@ describe('GET /api/blogs', () => {
   });
 
   test('blogs are the correct amount', async () => {
-    const response = await api.get('/api/blogs');
-    expect(response.body).toHaveLength(helper.InitialBlogs.length);
+    const { body } = await api.get('/api/blogs');
+    expect(body).toHaveLength(helper.InitialBlogs.length);
   });
 
   test('blogs have a property named id', async () => {
@@ -45,6 +32,52 @@ describe('GET /api/blogs', () => {
     expect(id).toBeDefined();
   });
 });
+
+describe('POST /api/blogs', () => {
+
+  test('a valid blog is added', async () => {
+    const validBlogObject = {
+      title: 'The State Reducer Pattern with React Hooks',
+      author: 'Kent C Dodds',
+      url: 'https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks',
+      likes: 54
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(validBlogObject)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const { body: blogs } = await api.get('/api/blogs');
+    expect(blogs).toHaveLength(helper.InitialBlogs.length + 1);
+    const blogTitles = blogs.map(blog => blog.title);
+    expect(blogTitles).toContain(validBlogObject.title);
+  });
+
+  test('added blog property "likes" default to 0 if missing', async () => {
+    const missingLikesObject = {
+      title: 'The State Reducer Pattern with React Hooks',
+      author: 'Kent C Dodds',
+      url: 'https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks'
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(missingLikesObject)
+      .expect(201);
+
+    const { body: blogs } = await api.get('/api/blogs');
+    expect(blogs[blogs.length - 1].likes).toEqual(0);
+
+  });
+
+});
+
+describe('Blogs property', () => {
+
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
