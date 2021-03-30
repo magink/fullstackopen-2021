@@ -55,7 +55,7 @@ describe('POST /api/blogs', () => {
     expect(blogTitles).toContain(validBlogObject.title);
   });
 
-  test('added blog property "likes" default to 0 if missing', async () => {
+  test('defaults blog property "likes" to 0 if missing', async () => {
     const missingLikesObject = {
       title: 'The State Reducer Pattern with React Hooks',
       author: 'Kent C Dodds',
@@ -71,12 +71,29 @@ describe('POST /api/blogs', () => {
     expect(blogs[blogs.length - 1].likes).toEqual(0);
 
   });
-
+  test('backend responds 400 for missing title', async () => {
+    const missingTitleObject = {
+      author: 'Kent C Dodds',
+      url: 'https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks',
+      likes: 10
+    };
+    await api
+      .post('/api/blogs')
+      .send(missingTitleObject)
+      .expect(400);
+  });
+  test('backend responds 400 for missing url', async () => {
+    const missingURLObject = {
+      title: 'The State Reducer Pattern with React Hooks',
+      author: 'Kent C Dodds',
+      likes: 10
+    };
+    await api.post('/api/blogs')
+      .send(missingURLObject)
+      .expect(400);
+  });
 });
 
-describe('Blogs property', () => {
-
-});
 
 afterAll(() => {
   mongoose.connection.close();
