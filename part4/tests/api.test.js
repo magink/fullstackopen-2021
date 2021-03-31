@@ -94,6 +94,18 @@ describe('POST /api/blogs', () => {
   });
 });
 
+// describe('DELETE /api/blogs', () => {
+//   test('successfully delete an existing blog', async () => {
+//     const blogsBefore = await helper.blogsInDB();
+//     const blogToDelete = blogsBefore[0];
+//     console.log(blogToDelete);
+//     await api.delete(`/api/blogs${blogsBefore[0].id}`)
+//       .expect(204);
+//     const blogsAfter = await helper.blogsInDB;
+//     expect(blogsAfter).toHaveLength(blogsBefore.length - 1);
+//     console.log(blogsAfter);
+//   });
+// });
 
 afterAll(() => {
   mongoose.connection.close();
