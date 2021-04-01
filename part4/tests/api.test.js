@@ -16,6 +16,7 @@ beforeEach(async () => {
 });
 
 describe('GET /api/blogs', () => {
+
   test('blogs are returned as json', async () => {
     await api.get('/api/blogs')
       .expect(200)
@@ -49,7 +50,7 @@ describe('POST /api/blogs', () => {
       .expect(201)
       .expect('Content-Type', /application\/json/);
 
-    const { body: blogs } = await api.get('/api/blogs');
+    const blogs = await helper.blogsInDB();
     expect(blogs).toHaveLength(helper.InitialBlogs.length + 1);
     const blogTitles = blogs.map(blog => blog.title);
     expect(blogTitles).toContain(validBlogObject.title);
@@ -61,16 +62,14 @@ describe('POST /api/blogs', () => {
       author: 'Kent C Dodds',
       url: 'https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks'
     };
-
     await api
       .post('/api/blogs')
       .send(missingLikesObject)
       .expect(201);
-
-    const { body: blogs } = await api.get('/api/blogs');
+    const blogs = await helper.blogsInDB();
     expect(blogs[blogs.length - 1].likes).toEqual(0);
-
   });
+
   test('backend responds 400 for missing title', async () => {
     const missingTitleObject = {
       author: 'Kent C Dodds',
@@ -82,6 +81,7 @@ describe('POST /api/blogs', () => {
       .send(missingTitleObject)
       .expect(400);
   });
+
   test('backend responds 400 for missing url', async () => {
     const missingURLObject = {
       title: 'The State Reducer Pattern with React Hooks',
@@ -94,18 +94,53 @@ describe('POST /api/blogs', () => {
   });
 });
 
-// describe('DELETE /api/blogs', () => {
-//   test('successfully delete an existing blog', async () => {
-//     const blogsBefore = await helper.blogsInDB();
-//     const blogToDelete = blogsBefore[0];
-//     console.log(blogToDelete);
-//     await api.delete(`/api/blogs${blogsBefore[0].id}`)
-//       .expect(204);
-//     const blogsAfter = await helper.blogsInDB;
-//     expect(blogsAfter).toHaveLength(blogsBefore.length - 1);
-//     console.log(blogsAfter);
-//   });
-// });
+describe('DELETE /api/blogs', () => {
+
+  test('successfully delete an existing blog', async () => {
+    const blogsBefore = await helper.blogsInDB();
+    const blogToDelete = blogsBefore[0];
+    await api.delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204);
+    const blogsAfter = await helper.blogsInDB();
+    expect(blogsAfter).toHaveLength(helper.InitialBlogs.length - 1);
+    expect(blogsAfter).not.toContain(blogToDelete.id);
+  });
+
+  test('respond with 404 when trying to delete non-existing blog', async () => {
+    const blogsBefore = await helper.blogsInDB();
+    const nonExistingBlog = await helper.nonExistingId();
+    await api
+      .delete(`/api/blogs/${nonExistingBlog}`)
+      .expect(404);
+    const blogsAfter = await helper.blogsInDB();
+    expect(blogsAfter).toHaveLength(blogsBefore.length);
+  });
+});
+
+describe('UPDATE /api/blogs', () => {
+
+  test('successfully updates an existing blog', async () => {
+    const { 0: blogToUpdate } = await helper.blogsInDB();
+    const updatedBlog = { ...blogToUpdate, likes: 99 };
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(200);
+    const blogsAfter = await helper.blogsInDB();
+    expect(blogsAfter[0].likes).toBe(updatedBlog.likes);
+  });
+
+  test('does not update a blog with invalid data', async () => {
+    const { 0: blogToUpdate } = await helper.blogsInDB();
+    const invalidBlog = { ...blogToUpdate, likes: 'fifteen' };
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(invalidBlog)
+      .expect(400);
+    const blogsAfter = await helper.blogsInDB();
+    expect(blogsAfter[0].likes).not.toBe(invalidBlog.likes);
+  });
+});
 
 afterAll(() => {
   mongoose.connection.close();
