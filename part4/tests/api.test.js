@@ -100,7 +100,7 @@ describe('DELETE /api/blogs', () => {
     const blogsBefore = await helper.blogsInDB();
     const blogToDelete = blogsBefore[0];
     await api.delete(`/api/blogs/${blogToDelete.id}`)
-      .expect(204);
+      .expect(200);
     const blogsAfter = await helper.blogsInDB();
     expect(blogsAfter).toHaveLength(helper.InitialBlogs.length - 1);
     expect(blogsAfter).not.toContain(blogToDelete.id);
@@ -111,7 +111,7 @@ describe('DELETE /api/blogs', () => {
     const nonExistingBlog = await helper.nonExistingId();
     await api
       .delete(`/api/blogs/${nonExistingBlog}`)
-      .expect(404);
+      .expect(204);
     const blogsAfter = await helper.blogsInDB();
     expect(blogsAfter).toHaveLength(blogsBefore.length);
   });
