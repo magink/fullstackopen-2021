@@ -64,6 +64,16 @@ describe('Testing user api', () => {
       expect(pass).toBeTruthy();
     });
 
+    test('a non-valid user missing username is not added', async () => {
+      const missingUsernameUser = { password: 'abc123', name: 'Boga Elhassan' };
+      await api
+        .post('/api/users')
+        .send(missingUsernameUser)
+        .expect(400);
+      const users = await helper.usersInDB();
+      expect(users).toHaveLength(helper.InitialUsers.length);
+    });
+
     test('a non-valid user missing password is not added', async () => {
       const missingPassUser = { username: 'nonvalid_user' };
       await api

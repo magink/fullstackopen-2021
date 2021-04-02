@@ -5,11 +5,11 @@ const errorHandler = (error, request, response, next) => {
     // console.log('CastError trigged');
     return response.status(400).send({ error: 'malformatted id' });
   } else if (error.name === 'ValidationError') {
-    // console.log('ValidationError Trigged');
+    // console.log(error.name, error.message);
     return response.status(400).json({ error: error.message });
   }
   else if(error.name === 'Error') {
-    // console.log('Generic Error for now');
+    // console.log(error.name, error.message);
     return response.status(400).json({ error: error.message });
   }
   next(error);
