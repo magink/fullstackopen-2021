@@ -106,7 +106,7 @@ describe('DELETE /api/blogs', () => {
     expect(blogsAfter).not.toContain(blogToDelete.id);
   });
 
-  test('respond with 404 when trying to delete non-existing blog', async () => {
+  test('respond with 204 when trying to delete non-existing blog', async () => {
     const blogsBefore = await helper.blogsInDB();
     const nonExistingBlog = await helper.nonExistingId();
     await api
