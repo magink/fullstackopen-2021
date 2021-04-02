@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcrypt');
 
+const SALT_WORK_FACTOR = 10;
+
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -12,9 +14,9 @@ const UserSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  password: {
+  hashedPassword: {
     type: String,
-    required: true
+    required: true,
   },
   blogs: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -25,20 +27,15 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.plugin(uniqueValidator);
 
-/**
- * Hash the password before save to database
- */
-UserSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) { // Don't hash the hash
-    return next();
-  }
-  this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
-
+UserSchema.methods.comparePassword = async function(candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
 
 UserSchema.statics.comparePassword = async (candidatePassword, hash) =>
   await bcrypt.compare(candidatePassword, hash);
+
+UserSchema.statics.hashPassword = async (password) =>
+  await bcrypt.hash(password, SALT_WORK_FACTOR);
 
 UserSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -48,5 +45,7 @@ UserSchema.set('toJSON', {
   }
 });
 const User = mongoose.model('User', UserSchema);
+
+
 
 module.exports = User;

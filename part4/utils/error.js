@@ -8,6 +8,10 @@ const errorHandler = (error, request, response, next) => {
     // console.log('ValidationError Trigged');
     return response.status(400).json({ error: error.message });
   }
+  else if(error.name === 'Error') {
+    // console.log('Generic Error for now');
+    return response.status(400).json({ error: error.message });
+  }
   next(error);
 };
 module.exports = { errorHandler };

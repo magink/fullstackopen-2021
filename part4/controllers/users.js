@@ -7,8 +7,19 @@ usersRouter.get('/', async (request, response) => {
 });
 
 usersRouter.post('/', async (request, response) => {
-  const user = new User(request.body);
-  const result = await user.save(); // Password is hashed pre save, defined in user model
+  const { password, username, name } = request.body;
+
+  if (!password || password.length < 4) {
+    throw new Error('Incorrect password credentials');
+  }
+
+  const hashedPassword = await User.hashPassword(password);
+  const user = new User({
+    username: username,
+    name: name,
+    hashedPassword,
+  });
+  const result = await user.save();
   response.status(201).json(result);
 
 });

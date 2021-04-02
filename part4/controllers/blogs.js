@@ -1,5 +1,7 @@
 const Blog = require('../models/blog');
 const blogsRouter = require('express').Router();
+const SALT_WORK_FACTOR = 10;
+
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({});
