@@ -1,6 +1,8 @@
 ### Root user
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwNjllZWEyYWNkOTg0MjhmYzcwN2E2YiIsImlhdCI6MTYxNzU2NTM1MX0.i4JhP28HmTvlDnBH8V9nA-f43dhnE9mYAFaghLDsfG8
+
 
 {
   "title": "Reddit",
