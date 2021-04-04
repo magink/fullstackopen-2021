@@ -1,3 +1,4 @@
+### Root user
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
@@ -5,10 +6,12 @@ Content-Type: application/json
   "title": "Reddit",
   "author": "magink",
   "url": "www.reddit.com",
-  "likes": 16
+  "likes": "16",
+  "userId": "6069eea2acd98428fc707a6b" 
+
 }
 
-###
+### terminator user
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
@@ -17,10 +20,12 @@ Content-Type: application/json
   "title": "Sweclockers",
   "author": "magink",
   "url": "www.sweclockers.com",
-  "likes": 12
+  "likes": "12",
+  "userId": "6069eeb0acd98428fc707a6c"
+
 }
 
-### 
+### user_01
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
@@ -29,5 +34,20 @@ Content-Type: application/json
   "title": "Fragzone",
   "author": "magink",
   "url": "www.fz.com",
-  "likes": 76
+  "likes": "76",
+  "userId": "6069eeb1acd98428fc707a6d"
+
+}
+
+### 
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "YR",
+  "author": "Norway",
+  "url": "www.yr.no",
+  "likes": "34",
+  "userId": "6069eeb1acd98428fc707a6d"
+
 }

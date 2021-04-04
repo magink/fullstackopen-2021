@@ -10,34 +10,23 @@ const User = require('../models/user');
 const api = supertest(app);
 
 beforeEach(async () => {
-  await User.deleteMany({});
-
-  const hashedUsers = helper.InitialUsers.map(async user => {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    const hashedUser =  new User({
-      username: user.username,
-      name: user.name,
-      hashedPassword
-    });
-    return hashedUser.save();
-  });
-  await Promise.all(hashedUsers);
+  await helper.setupTestUsers();
 });
 
 describe('Testing user api', () => {
 
   describe('GET /api/users', () => {
 
-    // test('user is returned as json', async () => {
-    //   const response = await api.get('/api/users')
-    //     .expect(200)
-    //     .expect('Content-Type', /application\/json/);
-    // });
+    test('user is returned as json', async () => {
+      const response = await api.get('/api/users')
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+    });
 
-  // test('correct amount of users', async () => {
-  //   const { body } = await api.get('/api/users');
-  //   expect(body).toHaveLength(helper.InitialUsers.length);
-  // });
+    test('correct amount of users', async () => {
+      const { body } = await api.get('/api/users');
+      expect(body).toHaveLength(helper.InitialUsers.length);
+    });
   });
 
   describe('POST /api/users', () => {

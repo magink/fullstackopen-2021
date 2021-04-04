@@ -8,11 +8,9 @@ const api = supertest(app);
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-
   const blogs = helper.InitialBlogs.map(blog => new Blog(blog));
   const promiseArray = blogs.map(blog => blog.save());
   await Promise.all(promiseArray);
-
 });
 
 describe('GET /api/blogs', () => {
@@ -35,15 +33,19 @@ describe('GET /api/blogs', () => {
 });
 
 describe('POST /api/blogs', () => {
+  beforeAll(async () => {
+    await helper.setupTestUsers();
+  });
 
   test('a valid blog is added', async () => {
+    const user = await helper.randomExistingUser();
     const validBlogObject = {
       title: 'The State Reducer Pattern with React Hooks',
       author: 'Kent C Dodds',
       url: 'https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks',
-      likes: 54
+      likes: 54,
+      userId: user.id
     };
-
     await api
       .post('/api/blogs')
       .send(validBlogObject)
@@ -55,12 +57,13 @@ describe('POST /api/blogs', () => {
     const blogTitles = blogs.map(blog => blog.title);
     expect(blogTitles).toContain(validBlogObject.title);
   });
-
   test('defaults blog property "likes" to 0 if missing', async () => {
+    const user = await helper.randomExistingUser();
     const missingLikesObject = {
       title: 'The State Reducer Pattern with React Hooks',
       author: 'Kent C Dodds',
-      url: 'https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks'
+      url: 'https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks',
+      userId: user.id
     };
     await api
       .post('/api/blogs')
@@ -71,10 +74,12 @@ describe('POST /api/blogs', () => {
   });
 
   test('backend responds 400 for missing title', async () => {
+    const user = await helper.randomExistingUser();
     const missingTitleObject = {
       author: 'Kent C Dodds',
       url: 'https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks',
-      likes: 10
+      likes: 10,
+      userId: user.id
     };
     await api
       .post('/api/blogs')
@@ -83,10 +88,12 @@ describe('POST /api/blogs', () => {
   });
 
   test('backend responds 400 for missing url', async () => {
+    const user = await helper.randomExistingUser();
     const missingURLObject = {
       title: 'The State Reducer Pattern with React Hooks',
       author: 'Kent C Dodds',
-      likes: 10
+      likes: 10,
+      userId: user.id
     };
     await api.post('/api/blogs')
       .send(missingURLObject)
@@ -108,7 +115,7 @@ describe('DELETE /api/blogs', () => {
 
   test('respond with 204 when trying to delete non-existing blog', async () => {
     const blogsBefore = await helper.blogsInDB();
-    const nonExistingBlog = await helper.nonExistingId();
+    const nonExistingBlog = await helper.nonExistingBlogId();
     await api
       .delete(`/api/blogs/${nonExistingBlog}`)
       .expect(204);

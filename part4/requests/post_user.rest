@@ -6,3 +6,22 @@ Content-Type: application/json
     "name": "Superuser",
     "password": "testing1234"
 }
+### 
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "terminator",
+    "name": "Douglas McCrachah",
+    "password": "134ghsd"
+}
+
+### 
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "user_01",
+    "name": "Sumgam 1",
+    "password": "argasdfg"
+}
