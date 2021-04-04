@@ -8,6 +8,9 @@ const errorHandler = (error, request, response, next) => {
     // console.log(error.name, error.message);
     return response.status(400).json({ error: error.message });
   }
+  else if (error.name === 'UnauthorizedError') {
+    response.status(401).json({ error: error.message });
+  }
   else if(error.name === 'Error') {
     // console.log(error.name, error.message);
     return response.status(400).json({ error: error.message });
