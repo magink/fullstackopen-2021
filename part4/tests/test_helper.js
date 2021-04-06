@@ -1,27 +1,7 @@
 const Blog = require('../models/blog');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
-
-const InitialBlogs = [
-  {
-    title: 'Why users care about how you write code',
-    author: 'Kent C Dodds',
-    url: 'https://kentcdodds.com/blog/why-users-care-about-how-you-write-code',
-    likes: 78
-  },
-  {
-    title: 'How to Modify Nodes in an Abstract Syntax Tree',
-    author: 'Jason Lengstorf',
-    url: 'https://css-tricks.com/how-to-modify-nodes-in-an-abstract-syntax-tree/',
-    likes: 34
-  },
-  {
-    title: 'Model-Based Testing in React with State Machines',
-    author: 'David Khourshid',
-    url: 'https://css-tricks.com/model-based-testing-in-react-with-state-machines/',
-    likes: 54
-  }
-];
+const jwt = require('jsonwebtoken');
 
 const InitialUsers = [
   {
@@ -44,6 +24,28 @@ const InitialUsers = [
     name: 'Kenta Andersson',
     password: '1010aa1010'
   },
+];
+
+
+const InitialBlogs = [
+  {
+    title: 'Why users care about how you write code',
+    author: 'Kent C Dodds',
+    url: 'https://kentcdodds.com/blog/why-users-care-about-how-you-write-code',
+    likes: 78
+  },
+  {
+    title: 'How to Modify Nodes in an Abstract Syntax Tree',
+    author: 'Jason Lengstorf',
+    url: 'https://css-tricks.com/how-to-modify-nodes-in-an-abstract-syntax-tree/',
+    likes: 34
+  },
+  {
+    title: 'Model-Based Testing in React with State Machines',
+    author: 'David Khourshid',
+    url: 'https://css-tricks.com/model-based-testing-in-react-with-state-machines/',
+    likes: 54
+  }
 ];
 
 const blogsInDB = async () => {
@@ -72,6 +74,7 @@ const nonExistingBlogId = async () => {
   await blog.remove();
   return blog.id.toString();
 };
+
 const setupTestUsers = async () => {
   await User.deleteMany({});
   const hashedUsers = InitialUsers.map(async user => {
@@ -84,6 +87,15 @@ const setupTestUsers = async () => {
     return hashedUser.save();
   });
   await Promise.all(hashedUsers);
+
+};
+const getToken = async (username) => {
+  const user = await User.findOne({ username: username });
+  if(!user) {
+    return null;
+  }
+  const token = jwt.sign({ username: user.username, id: user.id }, process.env.SECRET);
+  return token;
 };
 
 module.exports = {
@@ -93,5 +105,6 @@ module.exports = {
   usersInDB,
   nonExistingBlogId,
   randomExistingUser,
-  setupTestUsers
+  setupTestUsers,
+  getToken
 };
