@@ -14,7 +14,9 @@ const App = () => {
     event.preventDefault()
     try{
       const user = await loginService.login({username, password})
-      console.log('user is', user);
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
+      console.log('user token is ', user.token);
+      // blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -24,8 +26,8 @@ const App = () => {
     }
   }
   const handleLogout = (event) => {
-    event.preventDefault()
     setUser(null)
+    window.localStorage.removeItem('loggedInUser')
   }
   const handleUsernameChange = (event) => setUsername(event.target.value)
   const handlePasswordChange = (event) => setPassword(event.target.value)
@@ -35,6 +37,14 @@ const App = () => {
       setBlogs( blogs )
     )  
   }, [])
+  useEffect(() => {
+    const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
+    if(loggedInUserJSON) {
+      const user = JSON.parse(loggedInUserJSON)
+      setUser(user)
+      // blogService.setToken(user.token)
+    }
+  },[])
 
   return (
     <div>
@@ -47,7 +57,7 @@ const App = () => {
           handlePasswordChange={handlePasswordChange}
           /> :
           <>
-          <pr>{user.username}</pr>
+          <p>{user.username}</p>
           <button onClick={handleLogout}>Logout</button>
           <BlogList blogs={blogs}/>
           </>
