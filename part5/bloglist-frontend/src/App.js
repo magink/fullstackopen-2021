@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import BlogList from './components/BlogList'
+import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -15,8 +16,7 @@ const App = () => {
     try{
       const user = await loginService.login({username, password})
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
-      console.log('user token is ', user.token);
-      // blogService.setToken(user.token)
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -42,9 +42,18 @@ const App = () => {
     if(loggedInUserJSON) {
       const user = JSON.parse(loggedInUserJSON)
       setUser(user)
-      // blogService.setToken(user.token)
+      blogService.setToken(user.token)
     }
   },[])
+
+  const createBlog = async (newBlogObject) => {
+    try {
+      const createdBlog = await blogService.create(newBlogObject)
+      setBlogs(blogs.concat((createdBlog.data)))
+    } catch (error) {
+      console.log(error);
+    }
+  } 
 
   return (
     <div>
@@ -60,6 +69,7 @@ const App = () => {
           <p>{user.username}</p>
           <button onClick={handleLogout}>Logout</button>
           <BlogList blogs={blogs}/>
+          <BlogForm createBlog={createBlog} />
           </>
       }
     </div>
