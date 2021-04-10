@@ -1,5 +1,5 @@
 const errorHandler = (error, request, response, next) => {
-  // console.log('error was thrown', error.name, error.message);
+  console.log('error was thrown', error.name, error.message);
   switch(error.name) {
   case 'CastError':
     return response.status(400).send({ error: 'malformatted id' });
