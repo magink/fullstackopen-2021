@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import Toggleable from './components/Toggable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -13,6 +14,9 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
   const [warning, setWarning] = useState(false)
+
+  const blogFormRef = useRef()
+
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -55,12 +59,15 @@ const App = () => {
 
   const createBlog = async (newBlogObject) => {
     try {
+      blogFormRef.current.toggleVisibility()
       const createdBlog = await blogService.create(newBlogObject)
       setBlogs(blogs.concat((createdBlog)))
       showNotification(`a new blog ${createdBlog.title} by ${createdBlog.author} added`)
+      
     } catch (error) {
+      console.log(error);
       setWarning(true)
-      showNotification(`${error.response.data.message}`)
+      showNotification(`${error.response.data.error}`)
     }
   } 
 
@@ -89,7 +96,9 @@ const App = () => {
           <p>{user.username}</p>
           <button onClick={handleLogout}>Logout</button>
           <BlogList blogs={blogs}/>
-          <BlogForm createBlog={createBlog} />
+          <Toggleable buttonLabel='new blog' ref={blogFormRef}>
+            <BlogForm createBlog={createBlog} />
+          </Toggleable>
           </>
       }
     </div>
