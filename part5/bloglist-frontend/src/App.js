@@ -3,7 +3,7 @@ import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import Toggleable from './components/Toggable'
+import Toggleable from './components/Toggleable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
