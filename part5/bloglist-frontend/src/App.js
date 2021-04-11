@@ -24,7 +24,6 @@ const App = () => {
       const user = await loginService.login({username, password})
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
       blogService.setToken(user.token)
-      console.log(user);
       setUser(user)
       setUsername('')
       setPassword('')
@@ -71,6 +70,18 @@ const App = () => {
     }
   } 
 
+  const updateBlog = async (id, blogObject) => {
+    try {
+      await blogService.update(id, {...blogObject, user: blogObject.user.id})
+      const updatedBlogs = blogs.map(blog => {
+        return blog.id === blogObject.id ? blog = blogObject : blog
+      })
+      setBlogs(updatedBlogs)
+    } catch(error) {
+      console.log('error is', error);
+    }
+  }
+
   const showNotification = (message) => {
     setNotification(message)
     setTimeout(() => {
@@ -95,7 +106,7 @@ const App = () => {
           <>
           <p>{user.username}</p>
           <button onClick={handleLogout}>Logout</button>
-          <BlogList blogs={blogs}/>
+          <BlogList blogs={blogs} updateBlog={updateBlog}/>
           <Toggleable buttonLabel='new blog' ref={blogFormRef}>
             <BlogForm createBlog={createBlog} />
           </Toggleable>
