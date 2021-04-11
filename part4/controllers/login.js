@@ -6,6 +6,9 @@ loginRouter.post('/', async (request, response) => {
   const { username, password } = request.body;
 
   const user = await User.findOne({ username: username });
+  if(!user) {
+    throw new Error('Invalid username or password');
+  }
   const correctPassword = await User.comparePassword(password, user.hashedPassword);
   if(!(user && correctPassword)) {
     const e = new Error('invalid username or password');

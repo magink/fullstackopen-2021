@@ -1,6 +1,7 @@
 const errorHandler = (error, request, response, next) => {
-  console.log('error was thrown', error.name, error.message);
   switch(error.name) {
+  case 'TypeError':
+    return response.status(400).send({ error: 'wrong username or password' });
   case 'CastError':
     return response.status(400).send({ error: 'malformatted id' });
   case 'ValidationError':
@@ -8,7 +9,9 @@ const errorHandler = (error, request, response, next) => {
   case 'UnauthorizedError':
     return response.status(401).json({ error: error.message });
   case 'JsonWebTokenError':
-    return response.status(401).json({ error: 'invalid token' });
+    return response.status(401).json({ error: error.message });
+  case 'TokenExpiredError':
+    return response.status(401).json({ error: 'token is expired' });
   case 'MissingResource':
     return response.status(404).json({ error: error.message });
   case 'MissingToken':

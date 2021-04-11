@@ -1,7 +1,5 @@
 const Blog = require('../models/blog');
-const User = require('../models/user');
 const blogsRouter = require('express').Router();
-const jwt = require('jsonwebtoken');
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
@@ -34,23 +32,29 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.delete('/:id', async (request, response) => {
   const { user, params: { id } } = request;
-  const blog = await Blog.findById(id);
+  const blogToRemove = await Blog.findById(id);
   if(!user) {
     const e = new Error('user token is not provided');
     e.name = 'MissingToken';
     throw e;
   }
-  if (!blog) {
+  if (!blogToRemove) {
     const e = new Error('blog is not available');
     e.name = 'MissingResource';
     throw e;
   }
-  if(user.id.toString() !== blog.user.toString()) {
+  if(user.id.toString() !== blogToRemove.user.toString()) {
     const e = new Error('user is not authorized to delete this blog');
     e.name = 'UnauthorizedError';
     throw e;
   }
-  const res = await Blog.deleteOne(blog);
+  await Blog.deleteOne(blogToRemove);
+
+  user.blogs = user.blogs.filter(blogId => {
+    return blogId.toString() !== blogToRemove._id.toString();
+  });
+  await user.save();
+
   response.status(200).end();
 });
 
