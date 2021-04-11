@@ -43,9 +43,12 @@ const App = () => {
   const handlePasswordChange = (event) => setPassword(event.target.value)
   
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    (async () => {
+      const blogs = 
+        await blogService.getAll()
+      const sortedBlogs =  blogs.sort((a,b) => b.likes - a.likes )
+      setBlogs(sortedBlogs)
+    }) ()
   }, [])
   useEffect(() => {
     const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
