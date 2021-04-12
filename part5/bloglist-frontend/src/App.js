@@ -89,10 +89,11 @@ const App = () => {
     }
   }
 
-  const deleteBlog = async (id) => {
-    console.log('id is', id);
+  const deleteBlog = async (blog) => {
+    const doDelete = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
+    if (!doDelete) { return }
     try {
-      await blogService.deleteBlog(id)
+      await blogService.deleteBlog(blog.id)
       getBlogs()
     } catch (error) {
       console.log('error is', error);
