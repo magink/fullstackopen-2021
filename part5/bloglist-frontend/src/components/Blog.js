@@ -14,14 +14,13 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 }
     updateBlog(updatedBlog.id, updatedBlog)
   }
-  console.log('blog is', blog)
-  console.log('user is', user)
   return (
     <div style={blogStyle}>
-      <span>{blog.title} {blog.author}</span>
+      <span>{blog.title}</span>
+      <span>{blog.author}</span>
       <button onClick={() => setShowDetails(!showDetails)}>{showDetails ? 'hide' : 'show'}</button>
       {showDetails && (
-        <>
+        <div className="blogDetails">
           <p>{blog.url}</p>
           <span>likes: {blog.likes}</span>
           <button onClick={() => addLike()}>like</button>
@@ -29,7 +28,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
           {user.username === blog.user.username && (
             <button onClick={() => deleteBlog(blog)}>delete</button>
           )}
-        </>
+        </div>
       )}
     </div>
   )
