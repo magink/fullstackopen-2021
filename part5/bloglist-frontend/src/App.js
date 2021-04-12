@@ -43,12 +43,7 @@ const App = () => {
   const handlePasswordChange = (event) => setPassword(event.target.value)
   
   useEffect(() => {
-    (async () => {
-      const blogs = 
-        await blogService.getAll()
-      const sortedBlogs =  blogs.sort((a,b) => b.likes - a.likes )
-      setBlogs(sortedBlogs)
-    }) ()
+    getBlogs()
   }, [])
   useEffect(() => {
     const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
@@ -59,11 +54,20 @@ const App = () => {
     }
   },[])
 
+  const getBlogs = async () => {
+    const blogs = 
+        await blogService.getAll()
+      const sortedBlogs =  blogs.sort((a,b) => b.likes - a.likes )
+      setBlogs(sortedBlogs)
+  }
+ 
   const createBlog = async (newBlogObject) => {
     try {
       blogFormRef.current.toggleVisibility()
-      const createdBlog = await blogService.create(newBlogObject)
-      setBlogs(blogs.concat((createdBlog)))
+      const createdBlog = await blogService.createBlog(newBlogObject)
+      console.log('createdBlog is', createdBlog);
+      // setBlogs(blogs.concat((createdBlog)))
+      getBlogs()
       showNotification(`a new blog ${createdBlog.title} by ${createdBlog.author} added`)
       
     } catch (error) {
@@ -75,12 +79,22 @@ const App = () => {
 
   const updateBlog = async (id, blogObject) => {
     try {
-      await blogService.update(id, {...blogObject, user: blogObject.user.id})
+      await blogService.updateBlog(id, {...blogObject, user: blogObject.user.id})
       const updatedBlogs = blogs.map(blog => {
         return blog.id === blogObject.id ? blog = blogObject : blog
       })
       setBlogs(updatedBlogs)
     } catch(error) {
+      console.log('error is', error);
+    }
+  }
+
+  const deleteBlog = async (id) => {
+    console.log('id is', id);
+    try {
+      await blogService.deleteBlog(id)
+      getBlogs()
+    } catch (error) {
       console.log('error is', error);
     }
   }
@@ -109,7 +123,11 @@ const App = () => {
           <>
           <p>{user.username}</p>
           <button onClick={handleLogout}>Logout</button>
-          <BlogList blogs={blogs} updateBlog={updateBlog}/>
+          <BlogList 
+            blogs={blogs} 
+            updateBlog={updateBlog} 
+            deleteBlog={deleteBlog} 
+            user={user}/>
           <Toggleable buttonLabel='new blog' ref={blogFormRef}>
             <BlogForm createBlog={createBlog} />
           </Toggleable>

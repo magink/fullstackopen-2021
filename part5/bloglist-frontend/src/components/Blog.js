@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-const Blog = ({blog, updateBlog}) => {
+const Blog = ({blog, updateBlog, deleteBlog, user}) => {
   const [showDetails, setShowDetails] = useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -12,6 +12,8 @@ const Blog = ({blog, updateBlog}) => {
     const updatedBlog = {...blog, likes: blog.likes + 1}
     updateBlog(updatedBlog.id, updatedBlog)
   }
+  console.log('blog is', blog);
+  console.log('user is', user);
   return (
     <div style={blogStyle}>
       <span>{blog.title} {blog.author}</span>
@@ -22,6 +24,9 @@ const Blog = ({blog, updateBlog}) => {
           <span>likes: {blog.likes}</span>
           <button onClick={() => addLike()}>like</button>
           <p>{blog.user.name}</p>
+          {user.username === blog.user.username && (
+            <button onClick={() => deleteBlog(blog.id)}>delete</button>
+          )}
         </>
       )}
     </div>  
