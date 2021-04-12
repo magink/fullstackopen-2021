@@ -6,3 +6,12 @@ Content-Type: application/json
   "username": "terminator",
   "password": "134ghsd"
 }
+###
+
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "onefreeman",
+  "password": "hlalyxisnot3"
+}
