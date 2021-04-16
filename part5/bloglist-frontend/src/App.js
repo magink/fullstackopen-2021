@@ -122,7 +122,7 @@ const App = () => {
           handlePasswordChange={handlePasswordChange}
         /> :
         <>
-          <p>{user.username}</p>
+          <p>{user.username} logged in</p>
           <button onClick={handleLogout}>Logout</button>
           <BlogList
             blogs={blogs}

@@ -15,18 +15,18 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
     updateBlog(updatedBlog.id, updatedBlog)
   }
   return (
-    <div style={blogStyle}>
+    <div data-cy="blog-entry" style={blogStyle}>
       <span>{blog.title}</span>
       <span>{blog.author}</span>
-      <button onClick={() => setShowDetails(!showDetails)}>{showDetails ? 'hide' : 'show'}</button>
+      <button data-cy="toggle-details-button" onClick={() => setShowDetails(!showDetails)}>{showDetails ? 'hide' : 'show'}</button>
       {showDetails && (
-        <div className="blogDetails">
+        <div>
           <p>{blog.url}</p>
-          <span>likes: {blog.likes}</span>
-          <button className='likeButton' onClick={() => addLike()}>like</button>
+          <span data-cy="blog-likes">likes: {blog.likes}</span>
+          <button data-cy="like-button" onClick={() => addLike()}>like</button>
           <p>{blog.user.name}</p>
           {user.username === blog.user.username && (
-            <button onClick={() => deleteBlog(blog)}>delete</button>
+            <button data-cy="delete-button" onClick={() => deleteBlog(blog)}>delete</button>
           )}
         </div>
       )}

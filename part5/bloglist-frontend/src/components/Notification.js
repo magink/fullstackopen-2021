@@ -19,7 +19,7 @@ const Notification = ({ text, warning }) => {
     border: 'solid green',
   }
   return(
-    <div
+    <div data-cy="notification"
       style={
         warning ? { ...baseStyle, ...warningStyle } : { ...baseStyle, ...notificationStyle }}>
       {text}

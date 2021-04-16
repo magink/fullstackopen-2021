@@ -1,4 +1,4 @@
 ### Terminator user
 DELETE http://localhost:3003/api/blogs/606c19fea604ad347cbe83ef
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlcm1pbmF0b3IiLCJpZCI6IjYwNmE1OTBmOTZkZDliMjQ3ODA2YTEyNSIsImlhdCI6MTYxNzY5NzI5MywiZXhwIjoxNjE3NzAwODkzfQ.Qm5nvHfoqxzgi8VxMTAuc7pFH0uQghxE-1t2LdSIHNI
+Authorization: bearer 
 

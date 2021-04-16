@@ -21,6 +21,12 @@ app.use(tokenExtractor);
 app.use('/api/blogs', userExtractor, blogsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
+
+if(process.env.NODE_ENV === 'test') {
+  const testRouter = require('./controllers/tests');
+  app.use('/api/testing', testRouter);
+}
+
 app.use(errorHandler);
 
 module.exports = app;
