@@ -7,7 +7,7 @@ const notificationReducer = (state = initialState, action) => {
     case 'REMOVE_NOTIFICATION':
         return null
     default: 
-    return state
+      return state
   }
 }
 export const setNotification = notification => {
