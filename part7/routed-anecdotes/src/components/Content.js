@@ -5,12 +5,16 @@ import Menu from './Menu'
 import CreateNew from './CreateNew'
 import AnecdotesList from './AnecdotesList'
 import About from './About'
+import Anecdote from './Anecdote'
 
 const Content = ({anecdotes}) => {
   return (
     <Router>
       <Menu />
       <Switch>
+        <Route path="/anecdotes/:id">
+          <Anecdote anecdotes={anecdotes}/>
+        </Route>
         <Route path="/new">
           <CreateNew/>
         </Route>
