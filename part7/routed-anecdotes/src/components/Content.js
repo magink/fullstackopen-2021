@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Menu from './Menu'
@@ -7,7 +7,8 @@ import AnecdotesList from './AnecdotesList'
 import About from './About'
 import Anecdote from './Anecdote'
 
-const Content = ({anecdotes}) => {
+const Content = ({anecdotes, addNew, showNotification}) => {
+
   return (
     <Router>
       <Menu />
@@ -16,7 +17,7 @@ const Content = ({anecdotes}) => {
           <Anecdote anecdotes={anecdotes}/>
         </Route>
         <Route path="/new">
-          <CreateNew/>
+          <CreateNew addNew={addNew} showNotification={showNotification}/>
         </Route>
         <Route path="/about">
           <About/>

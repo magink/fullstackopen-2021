@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import Notification from './components/Notification'
 import Content from './components/Content'
 import Footer from './components/Footer'
 
@@ -24,6 +25,13 @@ const App = () => {
 
   const [notification, setNotification] = useState('')
 
+  const showNotification = (message) => {
+    setNotification(message)
+    setTimeout(() => {
+      setNotification(null)
+    }, 10000)
+  }
+
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
@@ -39,14 +47,19 @@ const App = () => {
       ...anecdote,
       votes: anecdote.votes + 1
     }
-
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Content anecdotes={anecdotes}/>
+      {notification && 
+        <Notification notification={notification} />
+      }
+      <Content 
+        anecdotes={anecdotes} 
+        addNew={addNew}
+        showNotification={showNotification} />
       <Footer />
     </div>
   )
