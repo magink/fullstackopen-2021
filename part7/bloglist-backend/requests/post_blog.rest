@@ -1,0 +1,14 @@
+### terminator user
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer 
+
+{
+  "title": "Fragzone",
+  "author": "Joakim Bennet",
+  "url": "www.fz.se",
+  "likes": "65",
+  "userId": "6069eeb0acd98428fc707a6c"
+
+}

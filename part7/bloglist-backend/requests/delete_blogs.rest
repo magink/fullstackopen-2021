@@ -1,0 +1,4 @@
+### Terminator user
+DELETE http://localhost:3003/api/blogs/606c19fea604ad347cbe83ef
+Authorization: bearer 
+

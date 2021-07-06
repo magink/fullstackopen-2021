@@ -1,0 +1,19 @@
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "terminator",
+    "name": "Douglas McCrachah",
+    "password": "134ghsd"
+}
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "onefreeman",
+    "name": "Gordon Freeman",
+    "password": "hlalyxisnot3"
+}
+
+
