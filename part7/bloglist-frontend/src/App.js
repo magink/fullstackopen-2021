@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
@@ -6,17 +8,18 @@ import Notification from './components/Notification'
 import Toggleable from './components/Toggleable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+// eslint-disable-next-line no-unused-vars
+import { setNotification, removeNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
   const [warning, setWarning] = useState(false)
-
+  const notification = useSelector(state => state.notification)
   const blogFormRef = useRef()
-
+  const dispatch = useDispatch()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -66,7 +69,6 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
       const createdBlog = await blogService.createBlog(newBlogObject)
       console.log('createdBlog is', createdBlog)
-      // setBlogs(blogs.concat((createdBlog)))
       getBlogs()
       showNotification(`a new blog ${createdBlog.title} by ${createdBlog.author} added`)
 
@@ -101,9 +103,9 @@ const App = () => {
   }
 
   const showNotification = (message) => {
-    setNotification(message)
+    dispatch(setNotification(message))
     setTimeout(() => {
-      setNotification(null)
+      dispatch(removeNotification(null))
       setWarning(false)
     }, 10000)
   }

@@ -17,7 +17,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   return (
     <div data-cy="blog-entry" style={blogStyle}>
       <span>{blog.title}</span>
-      <span>{blog.author}</span>
+      <span> by {blog.author}</span>
       <button data-cy="toggle-details-button" onClick={() => setShowDetails(!showDetails)}>{showDetails ? 'hide' : 'show'}</button>
       {showDetails && (
         <div>

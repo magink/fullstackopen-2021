@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 
-const Notification = ({ text, warning }) => {
+const Notification = ({ warning }) => {
+  const notification = useSelector(state => state.notification)
   const baseStyle = {
     backgroundColor: '#dcdcdc',
     borderRadius: '5px',
@@ -22,7 +24,7 @@ const Notification = ({ text, warning }) => {
     <div data-cy="notification"
       style={
         warning ? { ...baseStyle, ...warningStyle } : { ...baseStyle, ...notificationStyle }}>
-      {text}
+      {notification}
     </div>
   )
 }
