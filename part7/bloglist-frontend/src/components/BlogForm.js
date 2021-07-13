@@ -27,16 +27,16 @@ const BlogForm = ({ createBlog }) => {
       <h1>Create new</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <span>title:</span>
-          <input data-cy="new-blog-title" type="text" value={title} onChange={handleTitle}/>
+          <label htmlFor='title-input'>title:</label>
+          <input id='title-input' data-cy="new-blog-title" type="text" value={title} onChange={handleTitle}/>
         </div>
         <div>
-          <span>author:</span>
-          <input data-cy="new-blog-author" type="text" value={author} onChange={handleAuthor}/>
+          <label htmlFor="author-input">author:</label>
+          <input id='author-input' data-cy="new-blog-author" type="text" value={author} onChange={handleAuthor}/>
         </div>
         <div>
-          <span>url:</span>
-          <input data-cy="new-blog-url" type="text" value={url} onChange={handleUrl}/>
+          <label htmlFor="url-input">url:</label>
+          <input id='url-input' data-cy="new-blog-url" type="text" value={url} onChange={handleUrl}/>
         </div>
         <button data-cy="new-blog-button" type="submit">create</button>
       </form>

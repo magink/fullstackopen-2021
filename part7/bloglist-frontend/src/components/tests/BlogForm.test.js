@@ -16,9 +16,9 @@ describe('<BlogForm />', () => {
   })
   test('calls event handler with right props', () => {
     const component = render(<BlogForm createBlog={createBlogMock} />)
-    const titleInput = component.container.querySelector('.titleInput')
-    const authorInput = component.container.querySelector('.authorInput')
-    const urlInput = component.container.querySelector('.urlInput')
+    const titleInput = component.getByLabelText('title:')
+    const authorInput = component.getByLabelText('author:')
+    const urlInput = component.getByLabelText('url:')
     const form = component.container.querySelector('form')
     fireEvent.change(titleInput, {
       target: { value: blog.title }

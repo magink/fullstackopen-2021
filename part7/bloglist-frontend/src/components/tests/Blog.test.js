@@ -30,12 +30,9 @@ describe('<Blog />', () => {
   })
   test('renders only author and title by default', () => {
     const component = render(<Blog blog={blog} user={user} updateBlog={updateBlogMock} deleteBlog={deleteBlogMock}/>)
-
     const title = component.getByText('this is a blog testing title') // First method
     expect(title).toBeDefined()
-
     expect(component.container).toHaveTextContent('Kent Dodds') // Second Method
-
     const div = component.container.querySelector('.blogDetails') // Third method
     expect(div).toBeNull()
   })
@@ -52,7 +49,7 @@ describe('<Blog />', () => {
     const component = render(<Blog blog={blog} user={user} updateBlog={updateBlogMock} deleteBlog={deleteBlogMock}/>)
     const showButton = component.getByText('show')
     fireEvent.click(showButton)
-    const likeButton = component.container.querySelector('.likeButton')
+    const likeButton = component.getByText('like')
     fireEvent.click(likeButton)
     fireEvent.click(likeButton)
     expect(updateBlogMock.mock.calls).toHaveLength(2)

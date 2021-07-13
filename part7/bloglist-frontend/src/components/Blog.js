@@ -20,7 +20,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
       <span> by {blog.author}</span>
       <button data-cy="toggle-details-button" onClick={() => setShowDetails(!showDetails)}>{showDetails ? 'hide' : 'show'}</button>
       {showDetails && (
-        <div>
+        <div className="blogDetails">
           <p>{blog.url}</p>
           <span data-cy="blog-likes">likes: {blog.likes}</span>
           <button data-cy="like-button" onClick={() => addLike()}>like</button>
