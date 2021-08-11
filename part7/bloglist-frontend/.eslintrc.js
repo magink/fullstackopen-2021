@@ -18,12 +18,13 @@ module.exports = {
       "sourceType": "module"
   },
   "plugins": [
-      "react", "jest", "cypress"
+      "react", "jest", "cypress", "react-redux"
   ],
   "rules": {
       "indent": [
           "error",
-          2  
+          2,
+          {"SwitchCase": 1 } 
       ],
       "linebreak-style": [
           "error",
